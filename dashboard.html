@@ -250,11 +250,19 @@
 
         @media (max-width: 900px) {
             body {
-                padding: 90px 20px 30px 20px;
+                padding: 95px 16px 30px 16px;
             }
 
             .navbar {
-                padding: 0 20px;
+                padding: 0 16px;
+                height: 70px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .navigation-menu {
+                gap: 8px;
             }
 
             .nav-btn {
@@ -262,10 +270,20 @@
                 font-size: 13px;
             }
 
+            .top-right-container {
+                width: 50px;
+                height: 50px;
+            }
+
+            .app-logo {
+                width: 44px;
+                height: 44px;
+            }
+
             .dashboard-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
+                gap: 12px;
                 margin-bottom: 20px;
             }
 
@@ -276,13 +294,13 @@
             .btn-add {
                 width: 100%;
                 text-align: center;
-                padding: 10px 20px;
+                padding: 12px 20px;
                 font-size: 14px;
             }
 
             .dashboard-grid {
                 grid-template-columns: 1fr;
-                gap: 25px;
+                gap: 20px;
             }
 
             .time-filters {
