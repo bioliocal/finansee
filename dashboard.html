@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finansee - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #f4f6f4;
+            padding: 100px 40px 40px 40px; 
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+        }
+
+        .navigation-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 24px;
+            border: none;
+            background-color: #e0e4e0;
+            color: #557A55;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover { background-color: #6E8E6E; color: white; }
+        .nav-btn.active { background-color: #6E8E6E; color: white; }
+
+        .top-right-container {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-logo {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            clip-path: circle(49%);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e4e0;
+        }
+
+        .dashboard-header h2 {
+            color: #557A55;
+            font-size: 32px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .btn-add {
+            background-color: #6E8E6E;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+        .btn-add:hover { background-color: #557A55; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .time-filters {
+            display: flex;
+            justify-content: space-between;
+            background-color: #ffffff;
+            padding: 8px;
+            border-radius: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .filter-item {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-item.active {
+            background-color: #6E8E6E;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .balance-box-full {
+            background-color: #6E8E6E;
+            color: white;
+            padding: 45px 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .balance-box-full span {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .balance-box-full h1 {
+            margin: 15px 0 0 0;
+            font-size: 42px;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border-left: 5px solid #ddd;
+        }
+
+        .stat-card.in { border-left-color: #2e7d32; }
+        .stat-card.out { border-left-color: #c62828; }
+
+        .stat-card span {
+            font-size: 14px;
+            color: #777;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+            word-wrap: break-word;
+        }
+
+        .text-pemasukan { color: #2e7d32; }
+        .text-pengeluaran { color: #c62828; }
+
+        .right-panel-history {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right-panel-history h4 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #6E8E6E;
+            padding-bottom: 10px;
+        }
+
+        .transaction-list {
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .transaction-list::-webkit-scrollbar { width: 6px; }
+        .transaction-list::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 15px;
+            gap: 10px;
+        }
+
+        .transaction-item .left-side {
+            flex: 1;
+        }
+
+        .transaction-item .left-side span {
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .transaction-item .right-side-amount {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 90px 20px 30px 20px;
+            }
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .dashboard-header h2 {
+                font-size: 26px;
+            }
+
+            .btn-add {
+                width: 100%;
+                text-align: center;
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .time-filters {
+                overflow-x: auto;
+                justify-content: flex-start;
+                gap: 5px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .time-filters::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-item {
+                padding: 8px 20px;
+                flex: none;
+            }
+
+            .balance-box-full {
+                padding: 30px 20px;
+            }
+
+            .balance-box-full h1 {
+                font-size: 32px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .right-panel-history {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navigation-menu">
+            <a href="transaksi.html" class="nav-btn">Transaksi</a>
+            <a href="dashboard.html" class="nav-btn active">Dashboard</a>
+        </div>
+        <div class="top-right-container">
+            <img src="logo.jpeg" alt="Logo Finansee" class="app-logo">
+        </div>
+    </div>
+
+    <div class="dashboard-header">
+        <h2>Dashboard</h2>
+        <a href="transaksi.html" class="btn-add">+ Tambah Transaksi</a>
+    </div>
+
+    <div class="dashboard-grid">
+        
+        <div class="left-panel">
+            <div class="time-filters">
+                <div class="filter-item active" id="filter-harian">Harian</div>
+                <div class="filter-item" id="filter-mingguan">Mingguan</div>
+                <div class="filter-item" id="filter-bulanan">Bulanan</div>
+                <div class="filter-item" id="filter-tahunan">Tahunan</div>
+            </div>
+
+            <div class="balance-box-full">
+                <span>Total Saldo Anda Saat Ini</span>
+                <h1 id="totalSaldo">Rp 0</h1>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card in">
+                    <span>total pemasukan</span>
+                    <h3 id="totalPemasukan" class="text-pemasukan">Rp 0</h3>
+                </div>
+                <div class="stat-card out">
+                    <span>total pengeluaran</span>
+                    <h3 id="totalPengeluaran" class="text-pengeluaran">Rp 0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel-history">
+            <h4 id="historyTitle">Daftar Rekam Transaksi</h4>
+            <div id="listTransaksi" class="transaction-list"></div>
+        </div>
+
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
