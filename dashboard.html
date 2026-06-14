@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Finansee - Dashboard</title>
     <style>
         * {
@@ -11,21 +11,24 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Helvetica', Arial, sans-serif;
-            background-color: #f4f6f4;
-            padding: 100px 40px 40px 40px; 
-            min-height: 100vh;
-            width: 100vw;
+        html, body {
+            width: 100%;
+            max-width: 100%;
             overflow-x: hidden;
-            position: relative;
+            background-color: #f4f6f4;
+            font-family: 'Helvetica', Arial, sans-serif;
+        }
+
+        body {
+            padding-top: 90px;
+            min-height: 100vh;
         }
 
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 70px;
             background-color: #ffffff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -54,290 +57,243 @@
             transition: all 0.3s;
         }
 
-        .nav-btn:hover { background-color: #6E8E6E; color: white; }
-        .nav-btn.active { background-color: #6E8E6E; color: white; }
+        .nav-btn:hover, .nav-btn.active {
+            background-color: #6E8E6E;
+            color: white;
+        }
 
         .top-right-container {
-            width: 70px;
-            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .app-logo {
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
             clip-path: circle(49%);
         }
 
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e0e4e0;
-        }
-
-        .dashboard-header h2 {
-            color: #557A55;
-            font-size: 32px;
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .btn-add {
-            background-color: #6E8E6E;
-            color: white;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 15px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            white-space: nowrap;
-        }
-        .btn-add:hover { background-color: #557A55; }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+        .main-content {
             width: 100%;
-        }
-
-        .left-panel {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 30px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
-        }
-
-        .time-filters {
-            display: flex;
-            justify-content: space-between;
-            background-color: #ffffff;
-            padding: 8px;
-            border-radius: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-
-        .filter-item {
-            flex: 1;
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-            padding: 10px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .filter-item.active {
-            background-color: #6E8E6E;
-            color: white;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .balance-box-full {
-            background-color: #6E8E6E;
-            color: white;
-            padding: 45px 30px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .balance-box-full span {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .balance-box-full h1 {
-            margin: 15px 0 0 0;
-            font-size: 42px;
-            font-weight: bold;
-            word-wrap: break-word;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
-        .stat-card {
-            background-color: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            border-left: 5px solid #ddd;
+        h1 {
+            color: #557A55;
+            font-size: 32px;
+            margin-bottom: 5px;
         }
 
-        .stat-card.in { border-left-color: #2e7d32; }
-        .stat-card.out { border-left-color: #c62828; }
-
-        .stat-card span {
-            font-size: 14px;
-            color: #777;
-            display: block;
-            margin-bottom: 8px;
-            text-transform: capitalize;
-        }
-
-        .stat-card h3 {
-            margin: 0;
-            font-size: 20px;
+        .btn-tambah {
+            width: 100%;
+            padding: 14px;
+            background-color: #6E8E6E;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
             font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-tambah:hover {
+            background-color: #557A55;
+        }
+
+        .tabs-periode {
+            display: flex;
+            background-color: #ffffff;
+            padding: 6px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            width: 100%;
+        }
+
+        .tab-pilihan {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .tab-pilihan.active {
+            background-color: #6E8E6E;
+            color: white;
+        }
+
+        .card-utama {
+            background-color: #6E8E6E;
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(110,142,110,0.2);
+        }
+
+        .card-utama p {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .card-utama h2 {
+            font-size: 36px;
             word-wrap: break-word;
         }
 
-        .text-pemasukan { color: #2e7d32; }
-        .text-pengeluaran { color: #c62828; }
-
-        .right-panel-history {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 14px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.02);
-            display: flex;
-            flex-direction: column;
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
         }
 
-        .right-panel-history h4 {
-            margin: 0 0 20px 0;
+        .card-info {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            border-left: 5px solid #666;
+        }
+
+        .card-info.pemasukan { border-left-color: #2e7d32; }
+        .card-info.pengeluaran { border-left-color: #c62828; }
+
+        .card-info p {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .card-info h3 {
+            font-size: 20px;
+            word-wrap: break-word;
+        }
+
+        .card-info.pemasukan h3 { color: #2e7d32; }
+        .card-info.pengeluaran h3 { color: #c62828; }
+
+        .card-rekam {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            width: 100%;
+        }
+
+        .card-rekam h3 {
             color: #333;
             font-size: 18px;
-            border-bottom: 2px solid #6E8E6E;
+            border-bottom: 2px solid #f0f2f0;
             padding-bottom: 10px;
+            margin-bottom: 15px;
         }
-
-        .transaction-list {
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .transaction-list::-webkit-scrollbar { width: 6px; }
-        .transaction-list::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
 
         .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid #f5f5f5;
-            font-size: 15px;
-            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f2f0;
         }
 
         .transaction-item .left-side {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .transaction-item .left-side strong {
+            font-size: 15px;
+            color: #333;
         }
 
         .transaction-item .left-side span {
-            display: block;
-            font-size: 13px;
-            color: #777;
-            margin-top: 5px;
+            font-size: 12px;
+            color: #999;
         }
 
-        .transaction-item .right-side-amount {
-            text-align: right;
-            white-space: nowrap;
+        .transaction-item .right-side-amount strong {
+            font-size: 15px;
         }
 
-        @media (max-width: 900px) {
+        .text-pemasukan { color: #2e7d32; }
+        .text-pengeluaran { color: #c62828; }
+
+        @media (max-width: 768px) {
             body {
-                padding: 95px 16px 30px 16px;
+                padding-top: 80px;
             }
 
             .navbar {
-                padding: 0 16px;
-                height: 70px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                padding: 0 15px;
+                height: 65px;
             }
 
             .navigation-menu {
-                gap: 8px;
+                gap: 6px;
             }
 
             .nav-btn {
-                padding: 8px 16px;
+                padding: 8px 12px;
                 font-size: 13px;
             }
 
-            .top-right-container {
-                width: 50px;
-                height: 50px;
-            }
-
             .app-logo {
-                width: 44px;
-                height: 44px;
+                width: 40px;
+                height: 40px;
             }
 
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-                margin-bottom: 20px;
-            }
-
-            .dashboard-header h2 {
-                font-size: 26px;
-            }
-
-            .btn-add {
-                width: 100%;
-                text-align: center;
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .time-filters {
-                overflow-x: auto;
-                justify-content: flex-start;
-                gap: 5px;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .time-filters::-webkit-scrollbar {
-                display: none;
-            }
-
-            .filter-item {
-                padding: 8px 20px;
-                flex: none;
-            }
-
-            .balance-box-full {
-                padding: 30px 20px;
-            }
-
-            .balance-box-full h1 {
-                font-size: 32px;
-            }
-
-            .stats-container {
-                grid-template-columns: 1fr;
+            .main-content {
+                padding: 10px 15px;
                 gap: 15px;
             }
 
-            .stat-card {
+            h1 {
+                font-size: 26px;
+            }
+
+            .card-utama {
                 padding: 20px;
             }
 
-            .right-panel-history {
-                padding: 20px;
+            .card-utama h2 {
+                font-size: 28px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .card-info {
+                padding: 15px;
+            }
+
+            .card-rekam {
+                padding: 20px 15px;
+            }
+
+            .tab-pilihan {
+                font-size: 13px;
+                padding: 8px 4px;
             }
         }
     </style>
@@ -354,43 +310,39 @@
         </div>
     </div>
 
-    <div class="dashboard-header">
-        <h2>Dashboard</h2>
-        <a href="transaksi.html" class="btn-add">+ Tambah Transaksi</a>
-    </div>
+    <div class="main-content">
+        <h1>Dashboard</h1>
 
-    <div class="dashboard-grid">
-        
-        <div class="left-panel">
-            <div class="time-filters">
-                <div class="filter-item active" id="filter-harian">Harian</div>
-                <div class="filter-item" id="filter-mingguan">Mingguan</div>
-                <div class="filter-item" id="filter-bulanan">Bulanan</div>
-                <div class="filter-item" id="filter-tahunan">Tahunan</div>
+        <a href="transaksi.html" class="btn-tambah">+ Tambah Transaksi</a>
+
+        <div class="tabs-periode">
+            <button id="filter-harian" class="tab-pilihan active">Harian</button>
+            <button id="filter-mingguan" class="tab-pilihan">Mingguan</button>
+            <button id="filter-bulanan" class="tab-pilihan">Bulanan</button>
+            <button id="filter-tahunan" class="tab-pilihan">Tahunan</button>
+        </div>
+
+        <div class="card-utama">
+            <p>Total Saldo Anda Saat Ini</p>
+            <h2 id="totalSaldo">Rp 0</h2>
+        </div>
+
+        <div class="info-grid">
+            <div class="card-info pemasukan">
+                <p>Total Pemasukan</p>
+                <h3 id="totalPemasukan">Rp 0</h3>
             </div>
-
-            <div class="balance-box-full">
-                <span>Total Saldo Anda Saat Ini</span>
-                <h1 id="totalSaldo">Rp 0</h1>
-            </div>
-
-            <div class="stats-container">
-                <div class="stat-card in">
-                    <span>total pemasukan</span>
-                    <h3 id="totalPemasukan" class="text-pemasukan">Rp 0</h3>
-                </div>
-                <div class="stat-card out">
-                    <span>total pengeluaran</span>
-                    <h3 id="totalPengeluaran" class="text-pengeluaran">Rp 0</h3>
-                </div>
+            <div class="card-info pengeluaran">
+                <p>Total Pengeluaran</p>
+                <h3 id="totalPengeluaran">Rp 0</h3>
             </div>
         </div>
 
-        <div class="right-panel-history">
-            <h4 id="historyTitle">Daftar Rekam Transaksi</h4>
-            <div id="listTransaksi" class="transaction-list"></div>
+        <div class="card-rekam">
+            <h3 id="historyTitle">Daftar Rekam Transaksi</h3>
+            <div id="listTransaksi">
+                </div>
         </div>
-
     </div>
 
     <script src="dashboard.js"></script>
